@@ -42,6 +42,33 @@ Room Classifier는 이미지를 분석하여 방의 유형을 식별하는 웹 �
 
 ## 사용
 
-사진을 첨부하기만 하면 끝입니다!
+직관적인 웹 형식에 사진을 첨부하기만 하면 끝입니다!
 
 ## 기타
+
+<details open>
+  <summary>Recognition Rate</summary>
+  <table border="1" table-layout="fixed">
+  	<th align="center">Livingroom</th>
+  	<th align="center">Kitchen</th>
+    <th align="center">Library</th>
+  	<th align="center">Bedroom</th>
+    <th align="center">Bathroom</th>
+  	<th align="center">Average</th>
+  	<tr align="center"><!-- 첫번째 줄 시작 -->
+      <td>96.77%</td>
+      <td>93.10%</td>
+      <td>67.86%</td>
+      <td>70.00%</td>
+      <td>92.86%</td>
+      <td>
+        <span style="color:red">84.12%</span>
+      </td>
+  	</tr><!-- 첫번째 줄 끝 -->
+  </table>
+</details>
+
+<details close>
+  <summary>Heatmap</summary>
+  분석에 사용된 자료를 볼 수 있습니다. heatmap 문서를 확인하세요.
+</details>
