@@ -1,0 +1,223 @@
+:root {
+    --primary-color: #3CB371;
+    --text-color: #333;
+    --background-color: #f0f0f0;
+    --card-background: #f9f9f9;
+    --button-hover-color: #2ecc71;
+}
+
+#resultSection.hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 1px;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 80%;
+    max-width: 1000px;
+    background: var(--background-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.instructions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.step-box {
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.step-box h3 {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.step-box p {
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+#uploadSection {
+    margin-top: 20px;
+}
+
+.file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.file-input-wrapper input[type="file"] {
+    font-size: 1px; /* 화면을 차지하지 않도록 작은 크기로 설정 */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; /* 버튼의 크기만큼만 파일 입력이 차지하도록 설정 */
+    opacity: 0; /* 여전히 보이지 않게 유지 */
+    cursor: pointer;
+}
+
+.file-input-wrapper .btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file-input-wrapper .btn:hover {
+    background-color: var(--button-hover-color);
+}
+
+#modelLoading {
+    display: none;
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: red;
+}
+
+#resultSection {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#uploadedImage {
+    max-width: 45%;
+    border-radius: 10px;
+}
+
+.result-details {
+    width: 45%;
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#resultTable {
+    margin-top: 20px;
+    width: 100%;
+}
+
+#resultTable th, #resultTable td {
+    padding: 10px;
+    text-align: left;
+}
+
+#resultTable th {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+#resultTable td {
+    background-color: #fff;
+}
+
+.download-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: var(--button-hover-color);
+}
+
+.github-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.github-icon img {
+    width: 50px;
+    height: 50px;
+}
+
+
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .step-boxes {
+        display: block; /* Stack boxes vertically on small screens */
+    }
+
+    .box {
+        margin: 10px 0; /* Add margin between stacked boxes */
+        width: 100%;
+    }
+
+    .upload-section {
+        flex-direction: column; /* Align content vertically */
+    }
+
+    .file-input-wrapper .btn {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    #analyzeBtn {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    #uploadedImage {
+        max-width: 100%; /* Ensure images fit smaller screens */
+    }
+
+    #result, #plot {
+        padding: 10px;
+    }
+
+    .github-icon {
+        right: 10px;
+        bottom: 10px;
+    }
+}
