@@ -19,7 +19,7 @@
 
 Room Classifier is a web-based application that automatically identifies indoor space types through image analysis. This project combines YOLOv5 object detection technology, DBSCAN clustering analysis, and Manhattan distance-based similarity measurement techniques to precisely analyze the configuration of objects within a space.
 
-This system is the real implementation of the undergraduate thesis "Object-based Clustering Analysis Method for Identifying Types of Configured Spaces," submitted to the 2023 Korea Software Congress (KSC 2023). The goal of this research is to overcome the limitations of existing interior design applications and support user space design through more accurate identification of space types.
+This system is the real implementation of the undergraduate thesis "Object-Centric Clustering Analysis Method for Indoor Space Type Classification" submitted to the 2023 Korea Software Congress (KSC 2023). The goal of this research is to overcome the limitations of existing interior design applications and support user space design through more accurate identification of space types.
 
 ## Features
 
