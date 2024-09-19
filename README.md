@@ -13,9 +13,7 @@ Room Classifier는 이미지 분석을 통해 실내 공간의 유형을 자동�
 
 본 시스템은 2023년 한국소프트웨어종합학술대회(KSC 2023)에 제출된 학부생 논문 "구성 공간의 유형 식별을 위한 객체 기반의 군집 분석 방법"의 실제 구현체입니다. 이 연구는 기존 인테리어 애플리케이션의 한계를 극복하고, 보다 정확한 공간 유형 식별을 통해 사용자의 공간 설계를 지원하는 것을 목표로 합니다.
 
-📘 [English README](:링크를 여기에 삽입하세요)
-
-
+📘 [English README](:링크)
 
 ## 기능
 
@@ -25,8 +23,6 @@ Room Classifier는 이미지 분석을 통해 실내 공간의 유형을 자동�
 - 📊 **직관적인 결과 시각화**: 분석 결과를 3D PCA 플롯과 함께 명확하게 표시합니다.
 - 💾 **결과 다운로드**: 분석 결과와 시각화 자료를 편리하게 다운로드할 수 있습니다.
 - 🔄 **연속 분석 지원**: 여러 이미지를 연속적으로 분석할 수 있는 사용자 친화적 인터페이스를 제공합니다.
-
-
 
 ## 구조
 
@@ -71,64 +67,74 @@ graph TD
     B -->|결과 및 플롯 다운로드| A
 ```
 
+## 설치 및 실행
 
-
-## 설치
+### 방법 1: 로컬 환경에서 실행
 
 1. **리포지토리 클론**
-
    ```bash
    git clone https://github.com/your-repo/room-classifier.git
    cd room-classifier
    ```
 
-2. **Python 의존성 설치**
+2. **가상 환경 생성 및 활성화 (선택사항이지만 권장)**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux 또는 macOS
+   # 또는
+   venv\Scripts\activate  # Windows
+   ```
 
+3. **Python 의존성 설치**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **서버 실행**
-
+4. **서버 실행**
    ```bash
    python app.py
    ```
 
-서버가 `http://127.0.0.1:5000`에서 실행됩니다.
+   서버가 `http://127.0.0.1:5000`에서 실행됩니다.
 
+## 사용 방법
 
+1. 웹 브라우저에서 `http://127.0.0.1:5000`에 접속합니다.
+2. 'Upload Image' 버튼을 클릭하여 분석하고자 하는 실내 공간 이미지를 선택합니다. 선택시 자동으로 이미지를 처리합니다.
+4. 결과 화면에서 예측된 방의 유형, 유사도 점수표, 3D PCA 플롯을 확인합니다.
+5. 필요한 경우 'Download Results' 또는 'Download Plot' 버튼을 클릭하여 분석 결과를 저장합니다.
 
-## 사용
-
-직관적인 웹 형식에 사진을 첨부하기만 하면 끝입니다!
-
-
-
-## 기타
+## 성능 및 추가 정보
 
 <details open>
-  <summary>Recognition Rate</summary>
-  <table border="1" table-layout="fixed">
-  	<th align="center">Livingroom</th>
-  	<th align="center">Kitchen</th>
-    <th align="center">Library</th>
-  	<th align="center">Bedroom</th>
-    <th align="center">Bathroom</th>
-  	<th align="center">Average</th>
-  	<tr align="center"><!-- 첫번째 줄 시작 -->
-      <td>96.77%</td>
-      <td>93.10%</td>
-      <td>67.86%</td>
-      <td>70.00%</td>
-      <td>92.86%</td>
-      <td>
-        <span style="color:red">84.12%</span>
-      </td>
-  	</tr><!-- 첫번째 줄 끝 -->
-  </table>
+<summary><b>인식률 (Recognition Rate)</b></summary>
+
+아래 표는 각 방 유형별 인식 정확도를 나타냅니다:
+
+<table>
+  <tr>
+    <th align="center">거실<br>(Livingroom)</th>
+    <th align="center">주방<br>(Kitchen)</th>
+    <th align="center">서재<br>(Library)</th>
+    <th align="center">침실<br>(Bedroom)</th>
+    <th align="center">욕실<br>(Bathroom)</th>
+    <th align="center">평균<br>(Average)</th>
+  </tr>
+  <tr align="center">
+    <td>96.77%</td>
+    <td>93.10%</td>
+    <td>67.86%</td>
+    <td>70.00%</td>
+    <td>92.86%</td>
+    <td><b>84.12%</b></td>
+  </tr>
+</table>
+
 </details>
 
-<details close>
-  <summary>Heatmap</summary>
-  분석에 사용된 자료를 볼 수 있습니다. heatmap 문서를 확인하세요.
+<details>
+<summary><b>히트맵 (Heatmap) 정보</b></summary>
+
+분석에 사용된 데이터의 분포와 패턴을 시각화한 히트맵을 제공합니다. 자세한 내용은 `docs/heatmap.md` 문서를 참조하세요.
+
 </details>
