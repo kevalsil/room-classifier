@@ -13,7 +13,7 @@
 
 [ko]: ./README.md
 [icon-ko]: https://img.shields.io/badge/lang-ko-blue?style=flat-square
-[en]: ./docs/README.en.md
+[en]: ./README.en.md
 [icon-en]: https://img.shields.io/badge/lang-en-red?style=flat-square
 
 Room Classifier는 이미지 분석을 통해 실내 공간의 유형을 자동으로 식별하는 웹 기반 애플리케이션입니다. 이 프로젝트는 YOLOv5 객체 탐지 기술, DBSCAN 군집 분석, 그리고 맨해튼 거리 기반 유사도 측정 기법을 결합하여 공간 내 객체 구성을 정밀하게 분석합니다.
