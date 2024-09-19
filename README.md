@@ -9,11 +9,16 @@
 
 ## 개요
 
+[![ko][icon-ko]][ko] [![en][icon-en]][en] 
+
+[ko]: ./README.md
+[icon-ko]: https://img.shields.io/badge/lang-ko-blue?style=flat-square
+[en]: ./docs/README.en.md
+[icon-en]: https://img.shields.io/badge/lang-en-red?style=flat-square
+
 Room Classifier는 이미지 분석을 통해 실내 공간의 유형을 자동으로 식별하는 웹 기반 애플리케이션입니다. 이 프로젝트는 YOLOv5 객체 탐지 기술, DBSCAN 군집 분석, 그리고 맨해튼 거리 기반 유사도 측정 기법을 결합하여 공간 내 객체 구성을 정밀하게 분석합니다.
 
 본 시스템은 2023년 한국소프트웨어종합학술대회(KSC 2023)에 제출된 학부생 논문 "구성 공간의 유형 식별을 위한 객체 기반의 군집 분석 방법"의 실제 구현체입니다. 이 연구는 기존 인테리어 애플리케이션의 한계를 극복하고, 보다 정확한 공간 유형 식별을 통해 사용자의 공간 설계를 지원하는 것을 목표로 합니다.
-
-📘 [English README](:링크)
 
 ## 기능
 
@@ -67,9 +72,9 @@ graph TD
     B -->|결과 및 플롯 다운로드| A
 ```
 
-## 설치 및 실행
+## 설치
 
-### 방법 1: 로컬 환경에서 실행
+### 로컬 환경
 
 1. **리포지토리 클론**
    ```bash
@@ -95,8 +100,6 @@ graph TD
    python app.py
    ```
 
-   서버가 `http://127.0.0.1:5000`에서 실행됩니다.
-
 ## 사용 방법
 
 1. 웹 브라우저에서 `http://127.0.0.1:5000`에 접속합니다.
@@ -104,7 +107,7 @@ graph TD
 4. 결과 화면에서 예측된 방의 유형, 유사도 점수표, 3D PCA 플롯을 확인합니다.
 5. 필요한 경우 'Download Results' 또는 'Download Plot' 버튼을 클릭하여 분석 결과를 저장합니다.
 
-## 성능 및 추가 정보
+## 추가 정보
 
 <details open>
 <summary><b>인식률 (Recognition Rate)</b></summary>
@@ -133,8 +136,17 @@ graph TD
 </details>
 
 <details>
+<summary><b>샘플 자료</b></summary>
+
+웹 크롤링을 활용하여 Google에서 이미지를 수집했습니다. 수집된 이미지는 거실, 주방, 서재, 침실, 화장실의 5가지로 분류되었으며, 총 1,362장의 이미지가 모델 제작에 활용되었습니다. 카테고리별 이미지 수는 거실 320장, 주방 282장, 서재 175장, 침실 315장, 화장실 270장입니다. 분석된 자료는 `cvsdata` 폴더에서 확인할 수 있습니다.
+     
+</details>
+
+<details>
 <summary><b>히트맵 (Heatmap) 정보</b></summary>
 
 분석에 사용된 데이터의 분포와 패턴을 시각화한 히트맵을 제공합니다. 자세한 내용은 `docs/heatmap.md` 문서를 참조하세요.
 
+📘 [heatmap.md](./docs/heatmap.md)
+    
 </details>
