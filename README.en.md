@@ -1,7 +1,3 @@
-Here's the English translation of the README:
-
----
-
 <div align="center">
 
 # Room Classifier
