@@ -4,7 +4,7 @@
 
 🏠 이미지 기반 실내 공간 유형 분류 시스템
 
-<img src="./docs/screenshot/result.jpeg"  width="60%" height="auto"/>
+<img src="./docs/screenshot/result.jpeg"  width="500" height="auto"/>
 
 </div>
 
