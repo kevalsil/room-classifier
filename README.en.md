@@ -4,7 +4,7 @@
 
 🏠 Indoor Space Type Classification System Based on Images
 
-<img src="./docs/screenshot/result.jpeg"  width="50%" height="auto"/>
+<img src="./docs/screenshot/result.jpeg"  width="500" height="auto"/>
 
 </div>
 
