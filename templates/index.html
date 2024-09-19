@@ -30,7 +30,7 @@
         <div id="uploadSection">
             <div class="file-input-wrapper">
                 <button class="btn">Upload Image</button>
-                <input type="file" id="imageUpload" accept="image/*" disabled>
+                <input type="file" id="imageUpload" accept="image/*">
             </div>
             <div id="modelLoading">Loading model, please wait...</div>
         </div>
@@ -45,7 +45,11 @@
                         <th>Similarity Score</th>
                     </tr>
                 </table>
+                <p>
+                    <img id="plotImage" src="" alt="3D PCA Plot">
+                </p>
                 <button class="download-btn" onclick="downloadResults()">Download Results</button>
+                <button class="download-btn" onclick="downloadPlot()">Download Plot</button>
                 <button class="download-btn" onclick="returnToMain()">Back to Main</button>
             </div>
         </div>
@@ -57,20 +61,15 @@
 
     <script>
         let model;
+        let analysisResult;
         const imageUpload = document.getElementById('imageUpload');
         const instructions = document.getElementById('instructions');
         const uploadSection = document.getElementById('uploadSection');
         const resultSection = document.getElementById('resultSection');
         const uploadedImage = document.getElementById('uploadedImage');
         const modelLoadingText = document.getElementById('modelLoading');
-/*
-        window.onload = async () => {
-            modelLoadingText.style.display = 'block';
-            model = await cocoSsd.load();
-            modelLoadingText.style.display = 'none';
-            imageUpload.disabled = false;
-        };*/
-        imageUpload.disabled = false;
+        const plotImage = document.getElementById('plotImage');
+
         imageUpload.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -105,6 +104,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                analysisResult = data;
                 displayResult(data);
             })
             .catch(error => {
@@ -114,20 +114,58 @@
 
         function displayResult(data) {
             const resultTable = document.getElementById('resultTable');
-            data.distance_table.forEach(([room, distance]) => {
+            resultTable.innerHTML = '';
+
+            const closestRoom = data.closest_room;
+
+            const sortedDistanceTable = data.distance_table.sort((a, b) => a[1] - b[1]);
+
+            sortedDistanceTable.forEach(([room, distance]) => {
                 const row = resultTable.insertRow();
-                row.innerHTML = `<td>${room.split('/').pop().split('_')[0]}</td>
-                                <td>${(100 - distance * 10).toFixed(2)}%</td>`;
+                const roomName = room.split('/').pop().split('_')[0];
+                const percentage = distance !== null ? (100 - distance * 10).toFixed(2) + '%' : 'N/A';
+
+                if (roomName === closestRoom) {
+                    row.innerHTML = `<td style="font-weight: bold; color: red;">${roomName}</td>
+                                    <td style="font-weight: bold; color: red;">${percentage}</td>`;
+                } else {
+                    row.innerHTML = `<td>${roomName}</td>
+                                    <td>${percentage}</td>`;
+                }
             });
+
+            plotImage.src = `data:image/png;base64,${data.plot}`;
         }
 
         function downloadResults() {
-            const text = "Results: \n" + document.getElementById('resultTable').innerText;
-            const blob = new Blob([text], { type: 'text/plain' });
+            fetch('/download_results', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(analysisResult),
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'results.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function downloadPlot() {
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'results.txt';
+            link.href = plotImage.src;
+            link.download = 'plot.png';
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
         function returnToMain() {
@@ -135,13 +173,14 @@
             instructions.style.display = 'flex';
             uploadSection.style.display = 'block';
             imageUpload.value = '';
-            uploadedImage.src = '';  // 이미지 초기화
+            uploadedImage.src = '';
+            plotImage.src = '';
             resultTable.innerHTML = `
                 <tr>
                     <th>Room Type</th>
                     <th>Similarity Score</th>
                 </tr>
-            `;  // 결과 테이블 초기화
+            `;
         }
     </script>
 </body>

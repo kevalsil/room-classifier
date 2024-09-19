@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 import os
 import torch
 import pandas as pd
@@ -20,13 +20,11 @@ model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 def detect_and_process_image(image_path, num_classes=80):
     results = model(image_path)
     
-    # 벡터 초기화
-    vector = [0 for _ in range(num_classes)]
+    vector = [0] * num_classes
     
-    # 탐지 결과 처리
-    for det in results.xyxy[0]:  # 첫 번째 (그리고 유일한) 이미지의 탐지 결과
-        class_index = int(det[5])  # 클래스 인덱스
-        confidence = float(det[4]) * 10  # 정확도 * 10
+    for det in results.xyxy[0]:
+        class_index = int(det[5])
+        confidence = float(det[4]) * 10
         vector[class_index] += confidence
     
     return vector
@@ -53,7 +51,7 @@ def perform_clustering(csv_files, eps, min_samples):
         dbscan = DBSCAN(eps=eps, min_samples=min_samples)
         dbscan.fit(vectors_scaled)
 
-        core_samples = vectors_scaled[dbscan.core_sample_indices_] if len(dbscan.core_sample_indices_) > 0 else []
+        core_samples = vectors_scaled[dbscan.core_sample_indices_] if dbscan.core_sample_indices_.size > 0 else np.array([])
         cluster_data.append((core_samples, scaler, dbscan))
 
     all_data_combined = np.vstack(all_data)
@@ -72,19 +70,14 @@ def process_new_vector(new_vector):
 
     new_vector_pca = pca.transform([new_vector])[0]
 
-    all_data_pca = []
-    for core_samples, scaler, _ in cluster_data:
-        if len(core_samples) > 0:
-            all_data_pca.append(pca.transform(scaler.inverse_transform(core_samples)))
-        else:
-            all_data_pca.append([])
+    all_data_pca = [pca.transform(scaler.inverse_transform(core_samples)) if core_samples.size > 0 else np.array([]) for core_samples, scaler, _ in cluster_data]
 
     min_distance = np.inf
     closest_csv = None
     distance_table = []
 
-    for i, (core_samples, scaler, model) in enumerate(cluster_data):
-        if len(core_samples) == 0:
+    for i, (core_samples, scaler, _) in enumerate(cluster_data):
+        if core_samples.size == 0:
             distance_table.append((csv_files[i], None))
             continue
 
@@ -98,13 +91,12 @@ def process_new_vector(new_vector):
             min_distance = distance
             closest_csv = csv_files[i]
 
-    # 3D PCA 플롯 생성
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(111, projection='3d')
 
     colors = ['b', 'g', 'r', 'c', 'm']
     for i, data_pca in enumerate(all_data_pca):
-        if len(data_pca) > 0:
+        if data_pca.size > 0:
             ax.scatter(data_pca[:, 0], data_pca[:, 1], data_pca[:, 2], c=colors[i], label=csv_files[i].split('/')[-1].split('_')[0])
 
     ax.scatter(new_vector_pca[0], new_vector_pca[1], new_vector_pca[2], c='black', marker='x', s=100, label='New Vector')
@@ -112,9 +104,8 @@ def process_new_vector(new_vector):
     ax.set_title('3D PCA of Clusters')
     ax.legend()
 
-    # 플롯을 이미지로 변환
     img_buf = io.BytesIO()
-    plt.savefig(img_buf, format='png')
+    plt.savefig(img_buf, format='png', dpi=300, bbox_inches='tight')
     img_buf.seek(0)
     img_data = base64.b64encode(img_buf.getvalue()).decode()
     plt.close()
@@ -141,20 +132,35 @@ def analyze():
         return jsonify({'error': 'No selected file'})
     
     if file:
-        # 임시로 파일 저장
         temp_path = 'temp_image.jpg'
         file.save(temp_path)
         
-        # 이미지 분석
         vector = detect_and_process_image(temp_path)
-        
-        # 결과 처리
         result = process_new_vector(vector)
         
-        # 임시 파일 삭제
         os.remove(temp_path)
         
         return jsonify(result)
+
+@app.route('/download_results', methods=['POST'])
+def download_results():
+    data = request.json
+    result_text = f"Closest Room: {data['closest_room']}\n\nResults:\n"
+    for room, score in data['distance_table']:
+        room_name = room.split('/')[-1].split('_')[0]
+        score_str = f"{(100 - score * 10):.2f}%" if score is not None else "N/A"
+        result_text += f"{room_name}: {score_str}\n"
+    
+    result_file = io.BytesIO()
+    result_file.write(result_text.encode())
+    result_file.seek(0)
+    
+    return send_file(
+        result_file,
+        mimetype='text/plain',
+        as_attachment=True,
+        download_name='results.txt'
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

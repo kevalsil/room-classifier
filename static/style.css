@@ -28,6 +28,7 @@ body {
 }
 
 .container {
+    flex: auto;
     width: 80%;
     max-width: 1000px;
     background: var(--background-color);
@@ -45,13 +46,15 @@ h1 {
 
 .instructions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 30px;
 }
 
 .step-box {
     background: var(--card-background);
     padding: 20px;
+    margin: 10px;
     border-radius: 10px;
     width: 30%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -113,13 +116,15 @@ h1 {
 }
 
 #resultSection {
-    margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 30px;
 }
 
 #uploadedImage {
     max-width: 45%;
+    object-fit: contain;
     border-radius: 10px;
 }
 
@@ -148,6 +153,13 @@ h1 {
 
 #resultTable td {
     background-color: #fff;
+}
+
+#plotImage{
+    max-width: 50%;
+    height: auto;
+    max-height: 400px;
+    padding-top: 10px;
 }
 
 .download-btn {
@@ -185,8 +197,13 @@ h1 {
         font-size: 1.8em;
     }
 
-    .step-boxes {
-        display: block; /* Stack boxes vertically on small screens */
+    .instructions {
+        flex-direction: column;
+    }
+
+    .step-box {
+        padding: 10px;
+        width: 80%;
     }
 
     .box {
@@ -198,9 +215,17 @@ h1 {
         flex-direction: column; /* Align content vertically */
     }
 
-    .file-input-wrapper .btn {
-        font-size: 14px;
-        padding: 10px 14px;
+
+    #resultSection {
+        display: flex;
+        margin-top: 30px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .result-details {
+        margin-top: 10px;
+        width: 80%;
     }
 
     #analyzeBtn {
@@ -209,11 +234,21 @@ h1 {
     }
 
     #uploadedImage {
-        max-width: 100%; /* Ensure images fit smaller screens */
+        max-width: 70%; /* Ensure images fit smaller screens */
     }
 
     #result, #plot {
         padding: 10px;
+    }
+
+    #plotImage{
+        display: none;
+    }
+
+    .download-btn {
+        margin-top: 5px;
+        font-size: 16px;
+        padding: 8px 12px;
     }
 
     .github-icon {
